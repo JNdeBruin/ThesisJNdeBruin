@@ -1,0 +1,75 @@
+##
+# LOCATIONS
+##
+
+locations:
+    # region-1-start
+    region1:
+        coordinates: {x: 0, y: 0}
+        techs:
+            EB:
+            industrial_machinery:
+            TES:
+            buffer:
+            production_target:
+    # region-1-end
+    # other-locs-start
+    region2: 
+        coordinates: {x: 5, y: 5}
+    region3: 
+        coordinates: {x: 10, y: 10}
+    region4:
+        coordinates: {x: 15, y: 15}
+        techs:
+            market:
+    # other-locs-end
+
+##
+# TRANSMISSION CAPACITIES
+##
+
+links:
+    region2,region1:
+        techs:
+            grid0:
+            grid1:
+            grid2:
+            grid3:
+            grid4:
+            grid5:
+            grid6:
+            grid7:
+            grid8:
+            grid9:
+            grid10:
+            grid11:
+            grid12:
+            grid13:
+            grid14:
+            grid15:
+            grid16:
+            grid17:
+            grid18:
+            grid19:
+            grid20:
+            grid21:
+            grid22:
+            grid23:
+    region3,region2:
+        techs:
+            gridjan:
+            gridfeb:
+            gridmar:
+            gridapr:
+            gridmay:
+            gridjun:
+            gridjul:
+            gridaug:
+            gridsep:
+            gridoct:
+            gridnov:
+            griddec:
+    region4,region3:
+        techs:
+            grid:
+    #links-end

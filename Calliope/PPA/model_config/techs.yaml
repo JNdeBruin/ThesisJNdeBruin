@@ -1,0 +1,705 @@
+##
+# TECHNOLOGY DEFINITIONS 
+## --save_csv=outputs
+
+# calliope run PPA/model.yaml --save_csv=outputs --save_plots=plots.html
+
+techs:
+
+    ##
+    # Supply
+    ##
+
+    # PPA-start
+    PPA:
+        essentials:
+            name: 'Wind ppa'
+            color: '#F9CF22'
+            parent: supply
+            carrier_out: electricity
+        constraints:
+            resource: file=Wind.csv:CF 
+            force_resource: true
+            resource_unit: energy_per_cap
+            #energy_cap_equals: 43.32145
+        costs:
+            monetary:
+                om_prod: 50.8421747 ##EURO/MWh
+    # PPA-end
+
+    # market-start
+    market:
+        essentials:
+            name: 'Electricity market'
+            color: '#E37A72'
+            parent: supply
+            carrier_out: electricity
+        costs:
+            monetary:
+                om_prod: file=El_prices.csv:Price  # EUR per MWh
+    # market-end
+
+    ##
+    # Storage
+    ## 
+
+    ##
+    # Buffer
+    ## 
+
+    #buffer-start
+    buffer:
+        essentials:
+            name: 'Food storage'
+            color: '#003366'
+            parent: storage
+            carrier: food
+        constraints:
+            storage_cap_equals: 41485.0948509 #41485 tonnes of storage capacity
+            storage_initial: 0
+        costs:
+            monetary:
+                om_prod: 10 #10 EUR per ton product
+    #buffer-end
+
+    ##
+    # Production
+    ##
+    
+    #EB-start
+    EB:
+        essentials:
+            name: 'Electric boiler'
+            color: '#ffc107'
+            parent: conversion
+            carrier_in: electricity
+            carrier_out: heat
+        constraints:
+            energy_eff: 0.975 #Efficiency
+            lifetime: 15 #Lifetime in years
+            #energy_cap_equals: 37.52962
+        costs:
+            monetary:
+                interest_rate: 0.07 # Interest rate of 7%
+                energy_cap: 174358.974359 # EUR per MWth
+                om_annual: 1128.20512821 #EUR per MWth per year
+                om_prod: 0.51282051282 #EUR per MWhth
+    #EB-end
+
+    #Industrial_machinery-start
+    industrial_machinery:
+        essentials:
+            name: 'Industrial machinery'
+            color: '#4b0082'
+            parent: conversion_plus
+            carrier_in: electricity
+            carrier_in_2: heat
+            primary_carrier_in: electricity
+            carrier_out: food
+            primary_carrier_out: food
+        constraints:
+            carrier_ratios.carrier_in_2.heat: 7.78947368421 #7.79 MWh of heat for 1 MWh of electricity
+            carrier_ratios.carrier_out.food: 3.78947368261 #1 MWh of electricity produces 3.79 tonnes of food
+            energy_ramping: 0.1 #10% per hour
+            energy_cap_equals: 20.3196347032 # Production capacity in tonnes
+
+    #Industrial_machinery-end
+                
+    ##
+    # Demand
+    ##
+    # demand-start
+    production_target:
+        essentials:
+            name: 'Production target'
+            color: '#003366'
+            parent: demand
+            carrier: food
+        constraints:
+            resource: -16.25570776 #Targets in Tonnes/hour
+            force_resource: true
+    # demand-end
+
+    ##
+    # Transmission
+    ##
+
+    # transmission-start
+    
+    #Annual tariffs
+    grid:
+        essentials:
+            name: 'Annual grid connection'
+            color: '#e41a1c' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_cap_max: 100 #Constraint on grid connection of 100 MW
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 0 #65040 #Contracted charge in EUR/MW
+                purchase: 4098.37 #Fixed grid costs in EUR
+    
+    #Monthly charges
+    gridjan:
+        essentials:
+            name: 'Grid connection January'
+            color: '#e41a1c' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:January
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridfeb:
+        essentials:
+            name: 'Grid connection February'
+            color: '#377eb8' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:February
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridmar:
+        essentials:
+            name: 'Grid connection March'
+            color: '#4daf4a' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:March
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridapr:
+        essentials:
+            name: 'Grid connection April'
+            color: '#984ea3' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:April
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridmay:
+        essentials:
+            name: 'Grid connection May'
+            color: '#ff7f00'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:May
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 7072  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridjun:
+        essentials:
+            name: 'Grid connection June'
+            color: '#ffff33' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:June
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 7072 #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridjul:
+        essentials:
+            name: 'Grid connection July'
+            color: '#a65628'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:July
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 7072  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridaug:
+        essentials:
+            name: 'Grid connection August'
+            color: '#f781bf' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:August
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 7072  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridsep:
+        essentials:
+            name: 'Grid connection September'
+            color: '#999999' 
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:September
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridoct:
+        essentials:
+            name: 'Grid connection October'
+            color: '#66c2a5'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:October 
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    gridnov:
+        essentials:
+            name: 'Grid connection November'
+            color: '#fc8d62'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:November
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    griddec:
+        essentials:
+            name: 'Grid connection December'
+            olor: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=grid.csv:December
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 8840  #Peak demand charge in EUR per MW
+                #om_prod: file=Charge.csv:Charge #Contracted capacity in EUR per MW
+
+    #Contracted capacity per hour            
+    
+    grid0:
+        essentials:
+            name: 'Grid connection hour 0'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:0
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 1806.67 #Peak demand charge in EUR per MW
+
+    grid1:
+        essentials:
+            name: 'Grid connection hour 1'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:1
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 1806.67 #Peak demand charge in EUR per MW
+
+    grid2:
+        essentials:
+            name: 'Grid connection hour 2'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:2
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 1806.67 #Peak demand charge in EUR per MW
+
+    grid3:
+        essentials:
+            name: 'Grid connection hour 3'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:3
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 1806.67 #Peak demand charge in EUR per MW
+
+    grid4:
+        essentials:
+            name: 'Grid connection hour 4'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:4
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 1806.67 #Peak demand charge in EUR per MW
+    
+    grid5:
+        essentials:
+            name: 'Grid connection hour 5'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:5
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 1806.67 #Peak demand charge in EUR per MW
+
+    grid6:
+        essentials:
+            name: 'Grid connection hour 6'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:6
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 2710 #Peak demand charge in EUR per MW
+
+    grid7:
+        essentials:
+            name: 'Grid connection hour 7'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:7
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 3613.33 #Peak demand charge in EUR per MW
+
+    grid8:
+        essentials:
+            name: 'Grid connection hour 8'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:8
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 4516.67 #Peak demand charge in EUR per MW
+    
+    grid9:
+        essentials:
+            name: 'Grid connection hour 9'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:9
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 4516.67 #Peak demand charge in EUR per MW
+
+    grid10:
+        essentials:
+            name: 'Grid connection hour 10'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:10
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 3613.33 #Peak demand charge in EUR per MW
+    
+    grid11:
+        essentials:
+            name: 'Grid connection hour 11'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:11
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 2710 #Peak demand charge in EUR per MW
+    
+    grid12:
+        essentials:
+            name: 'Grid connection hour 12'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:12
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 2710 #Peak demand charge in EUR per MW
+
+    grid13:
+        essentials:
+            name: 'Grid connection hour 13'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:13
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 2710 #Peak demand charge in EUR per MW
+
+    grid14:
+        essentials:
+            name: 'Grid connection hour 14'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:14
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 2710 #Peak demand charge in EUR per MW
+    
+    grid15:
+        essentials:
+            name: 'Grid connection hour 15'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:15
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 3613.33 #Peak demand charge in EUR per MW
+
+    grid16:
+        essentials:
+            name: 'Grid connection hour 16'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:16
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 4516.67 #Peak demand charge in EUR per MW
+    
+    grid17:
+        essentials:
+            name: 'Grid connection hour 17'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:17
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 4516.67 #Peak demand charge in EUR per MW
+    
+    grid18:
+        essentials:
+            name: 'Grid connection hour 18'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:18
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 4516.67 #Peak demand charge in EUR per MW
+
+    grid19:
+        essentials:
+            name: 'Grid connection hour 19'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:19
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 4516.67 #Peak demand charge in EUR per MW
+    
+    grid20:
+        essentials:
+            name: 'Grid connection hour 20'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:20
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 3613.33 #Peak demand charge in EUR per MW
+    
+    grid21:
+        essentials:
+            name: 'Grid connection hour 21'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:21
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 3613.33 #Peak demand charge in EUR per MW
+    
+    grid22:
+        essentials:
+            name: 'Grid connection hour 22'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:22
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 2710 #Peak demand charge in EUR per MW
+
+    grid23:
+        essentials:
+            name: 'Grid connection hour 23'
+            color: '#8da0cb'
+            parent: transmission
+            carrier: electricity      
+        constraints:
+            energy_eff: file=Contract.csv:23
+            lifetime: 1
+            one_way: true
+        costs:
+            monetary:
+                interest_rate: 0 #No interest rate
+                energy_cap: 2710 #Peak demand charge in EUR per MW
+
+
+
+    # transmission-end
+
+

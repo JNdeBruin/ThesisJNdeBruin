@@ -1,0 +1,68 @@
+##
+# Scenarios
+##
+scenarios:
+    low_wind: ['low_wind']
+    one: ['kwmax']
+    two: ['kwh']
+    three: ['kwmax', 'kwh']
+    four: ['kwcontract']
+    five: ['kwmax', 'kwh', 'kwcontract']
+    low_wind1: ['low_wind', 'kwmax']
+    low_wind2: ['low_wind', 'kwh']
+    low_wind3: ['low_wind', 'kwmax', 'kwh']
+    low_wind4: ['low_wind', 'kwcontract']
+    low_wind5: ['low_wind', 'kwmax', 'kwh', 'kwcontract']
+
+
+##
+# Overrides 
+##
+
+overrides:
+    low_wind:  
+        techs.market.costs.monetary.om_prod: file=El_prices_1997:Price
+        techs.PPA.constraints.resource: file=Wind_1997:Output
+    kwmax:
+        techs.grid2.costs.monetary.energy_cap: 10
+        techs.grid3.costs.monetary.energy_cap: 10
+        techs.grid4.costs.monetary.energy_cap: 10
+        techs.grid5.costs.monetary.energy_cap: 10
+        techs.grid6.costs.monetary.energy_cap: 10
+        techs.grid7.costs.monetary.energy_cap: 10
+        techs.grid8.costs.monetary.energy_cap: 10
+        techs.grid9.costs.monetary.energy_cap: 10
+        techs.grid10.costs.monetary.energy_cap: 10
+        techs.grid11.costs.monetary.energy_cap: 10
+        techs.grid12.costs.monetary.energy_cap: 10
+    kwh:
+        techs.grid2.costs.monetary.om_prod: 10
+        techs.grid3.costs.monetary.om_prod: 10
+        techs.grid4.costs.monetary.om_prod: 10
+        techs.grid5.costs.monetary.om_prod: 10
+        techs.grid6.costs.monetary.om_prod: 10
+        techs.grid7.costs.monetary.om_prod: 10
+        techs.grid8.costs.monetary.om_prod: 10
+        techs.grid9.costs.monetary.om_prod: 10
+        techs.grid10.costs.monetary.om_prod: 10
+        techs.grid11.costs.monetary.om_prod: 10
+        techs.grid12.costs.monetary.om_prod: 10
+    kwcontract:
+        techs.grid2.costs.monetary.om_con: 10
+        techs.grid3.costs.monetary.om_con: 10
+        techs.grid4.costs.monetary.om_con: 10
+        techs.grid5.costs.monetary.om_con: 10
+        techs.grid6.costs.monetary.om_con: 10
+        techs.grid7.costs.monetary.om_con: 10
+        echs.grid8.costs.monetary.om_con: 10
+        techs.grid9.costs.monetary.om_con: 10
+        techs.grid10.costs.monetary.om_con: 10
+        techs.grid11.costs.monetary.om_con: 10
+        techs.grid12.costs.monetary.om_con: 10
+
+
+        
+
+
+    
+
