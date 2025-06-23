@@ -1,4 +1,4 @@
-# ThesisJNdeBruin
+# DSM in an electrified food industry
 
 This GitHub-page provides the four models used for my master's thesis on different DSM-strategies under varying grid tariff designs. The models are made in the Calliope, using YAML- and CSV-files. A elaborated description on the logic of the four models can be found in the thesis, 'DSM in an electrified food industry', at the TU Delft Repository: https://repository.tudelft.nl/. More information on the installation, functioning and and running of Calliope can be found at: https://calliope.readthedocs.io/en/stable/ . The CSV-files that are included and their purpose are the following:
 
