@@ -1,6 +1,6 @@
 # ThesisJNdeBruin
 
-This GitHub-page provides the four models used for my master's thesis on different DSM-strategies under varying grid tariff designs. The models are made in the Calliope, using YAML- and CSV-files. A elaborated description on the logic of the four models can be found in the thesis, 'DSM in an electrified food industry', at the TU Delft Repository. More information on the installation, functioning and and running of Calliope can be found at: https://calliope.readthedocs.io/en/stable/ . The CSV-files that are included and their purpose are the following:
+This GitHub-page provides the four models used for my master's thesis on different DSM-strategies under varying grid tariff designs. The models are made in the Calliope, using YAML- and CSV-files. A elaborated description on the logic of the four models can be found in the thesis, 'DSM in an electrified food industry', at the TU Delft Repository: https://repository.tudelft.nl/. More information on the installation, functioning and and running of Calliope can be found at: https://calliope.readthedocs.io/en/stable/ . The CSV-files that are included and their purpose are the following:
 
 - Contract.csv: This CSV-file restricts the monthly cables that they can only be used in a single month by setting their efficiency to zero outside of their month.
 - demand.csv: This CSV-file includes the hourly production target of the industry.
